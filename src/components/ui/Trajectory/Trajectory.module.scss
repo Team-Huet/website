@@ -1,0 +1,85 @@
+.figure {
+  .paths {
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    z-index: -1;
+    width: max(100%, 48rem);
+    height: 100%;
+    pointer-events: none;
+    fill: none;
+    mask-image: linear-gradient(
+      105deg,
+      transparent,
+      rgb(0 0 0 / 10%) 28%,
+      black 74%
+    );
+  }
+
+  circle {
+    fill: var(--accent-text);
+  }
+
+  button {
+    position: absolute;
+    bottom: 1rem;
+    right: max(var(--page-gutter), calc((100% - var(--content-width)) / 2));
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--touch-target);
+    padding-inline: 1.125rem;
+    border-radius: 2rem;
+    background: var(--control-bg);
+    color: var(--muted);
+    font-size: 0.875rem;
+    cursor: pointer;
+    &:is(:hover, :focus-visible) {
+      background: var(--control-hover);
+    }
+    span {
+      color: var(--accent-text);
+    }
+  }
+}
+
+.connection {
+  stroke: var(--accent-text);
+  stroke-opacity: 0.42;
+  vector-effect: non-scaling-stroke;
+}
+
+.figure .hub {
+  stroke: var(--accent-text);
+  stroke-opacity: 0.6;
+  fill: none;
+}
+
+.point {
+  stroke: var(--accent-text);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 0.24 99.76;
+  animation: travel 9s linear infinite paused;
+}
+
+.figure[data-playing='true'] .point {
+  animation-play-state: running;
+}
+
+@media (max-width: 48rem) {
+  .figure .paths {
+    mask-image: linear-gradient(
+      108deg,
+      transparent 38%,
+      rgb(0 0 0 / 12%) 71%,
+      rgb(0 0 0 / 80%)
+    );
+  }
+}
+
+@keyframes travel {
+  to {
+    stroke-dashoffset: -100;
+  }
+}

@@ -1,0 +1,68 @@
+.toggle {
+  display: grid;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--gold) 65%, var(--blue-deep));
+  border-radius: 50%;
+  color: var(--blue-deep);
+  background-color: #ffdb54;
+  cursor: pointer;
+
+  svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    grid-area: 1 / 1;
+    pointer-events: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.sun {
+  opacity: 1;
+}
+
+.moon {
+  opacity: 0;
+  transform: rotate(48deg) scale(0.55);
+}
+
+:global([data-theme='dark']) {
+  .toggle {
+    background-color: #000;
+    color: var(--ice);
+    border-color: var(--blue-grey);
+  }
+  .sun {
+    opacity: 0;
+    transform: rotate(-55deg) scale(0.55);
+  }
+  .moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toggle {
+    transition:
+      background-color var(--theme-duration) ease,
+      color var(--theme-duration) ease,
+      border-color var(--theme-duration) ease,
+      box-shadow 180ms ease;
+
+    &:is(:hover, :focus-visible) {
+      box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
+    }
+    &:active {
+      box-shadow: inset 0 0 0 2px
+        color-mix(in srgb, currentColor 22%, transparent);
+    }
+  }
+  .toggle svg {
+    transition:
+      transform var(--theme-duration) ease,
+      opacity var(--theme-duration) ease;
+  }
+}

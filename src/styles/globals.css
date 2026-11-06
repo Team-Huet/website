@@ -1,0 +1,195 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: 'Onest Variable', Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --color-brand: var(--brand);
+  --color-ink: var(--text);
+  --color-canvas: var(--background);
+}
+
+:root {
+  --font-wordmark: 'Michroma', Arial, sans-serif;
+  color-scheme: light;
+  --brand: #009ee0;
+  --blue-deep: #071b33;
+  --blue-tech: #123b68;
+  --gold: #d6b36a;
+  --ice: #f5f7fa;
+  --blue-grey: #91a4b8;
+  --background: var(--ice);
+  --surface: #ffffff;
+  --text: var(--blue-deep);
+  --editorial-ink: #000;
+  --muted: #42566b;
+  --accent-text: #0077aa;
+  --border: #c7d2dd;
+  --line: #c2d5e2;
+  --focus: #0077aa;
+  --hero-gold-peak: color-mix(in srgb, var(--gold) 70%, #241807);
+  --hero-gold-shade: color-mix(in srgb, var(--gold) 46%, #241807);
+  --control-bg: color-mix(in srgb, var(--brand) 23%, var(--background));
+  --control-hover: color-mix(in srgb, var(--brand) 36%, var(--background));
+  --theme-duration: 380ms;
+  --page-gutter: clamp(1.25rem, 5vw, 5rem);
+  --content-width: 80rem;
+  --touch-target: 3rem;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --background: #08192b;
+  --surface: #171e25;
+  --text: var(--ice);
+  --editorial-ink: var(--text);
+  --muted: var(--blue-grey);
+  --accent-text: #37b9ef;
+  --border: #2c4560;
+  --line: #25435f;
+  --focus: var(--gold);
+  --hero-gold-peak: color-mix(in srgb, var(--gold) 55%, var(--ice));
+  --hero-gold-shade: var(--gold);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 550;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+a {
+  text-underline-offset: 0.25em;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  font-family: var(--font-sans);
+}
+::selection {
+  background: var(--blue-tech);
+  color: var(--ice);
+}
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 5px;
+}
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  transform: translateY(-200%);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.error-page {
+  display: grid;
+  gap: 1.5rem;
+  min-height: 80svh;
+  padding: var(--page-gutter);
+  align-content: center;
+  max-width: 60rem;
+  margin-inline: auto;
+}
+.error-page h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.15;
+}
+.error-page a {
+  text-decoration: underline;
+  color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Interpolate the shared palette once, including SVGs and gradient stops. */
+@property --background {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --surface {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --text {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --accent-text {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --focus {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --hero-gold-peak {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@property --hero-gold-shade {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme] {
+    transition-property:
+      --background, --surface, --text, --muted, --accent-text, --border,
+      --focus, --hero-gold-peak, --hero-gold-shade;
+    transition-duration: var(--theme-duration);
+    transition-timing-function: ease-in-out;
+  }
+}

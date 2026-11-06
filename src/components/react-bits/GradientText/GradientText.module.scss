@@ -1,0 +1,26 @@
+.content {
+  display: inline-block;
+  /* Allow the final glyph to overhang its negatively tracked advance. */
+  padding-inline-end: 0.08em;
+  margin-inline-end: -0.08em;
+  background-size: 300% 100%;
+  background-clip: text;
+  color: transparent;
+  animation: sweep 4s ease-in-out infinite alternate;
+  animation-play-state: var(--hero-play-state, paused);
+}
+
+@keyframes sweep {
+  from {
+    background-position: left center;
+  }
+  to {
+    background-position: right center;
+  }
+}
+
+@media (forced-colors: active) {
+  .content {
+    color: CanvasText;
+  }
+}

@@ -1,0 +1,512 @@
+.header,
+.heroCopy,
+.initiative,
+.challenge,
+.proposal,
+.applications,
+.footer {
+  width: min(100% - 2 * var(--page-gutter), var(--content-width));
+  margin-inline: auto;
+}
+
+.header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 6rem;
+  border-bottom: 1px solid var(--gold);
+}
+
+.wordmark,
+.footer > span {
+  font-family: var(--font-wordmark);
+}
+
+.wordmark {
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-decoration: none;
+}
+
+.logoDot {
+  display: inline-block;
+  width: 0.22em;
+  height: 0.22em;
+  margin-inline-start: 0.06em;
+  border-radius: 50%;
+  background-color: var(--brand);
+}
+
+.emphasis {
+  color: inherit;
+  font-weight: 700;
+}
+
+.initiative h2 .emphasis {
+  color: var(--accent-text);
+}
+
+:global([data-theme='dark']) .initiative h2 .emphasis {
+  color: var(--gold);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(p, dd) .emphasis:hover {
+    color: var(--accent-text);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :is(p, dd) .emphasis {
+      transition: color 200ms ease;
+    }
+  }
+}
+
+.etLetters {
+  position: absolute;
+  color: transparent;
+  pointer-events: none;
+}
+
+/* Contorno ET da Michroma em unidades da fonte, com uma única barra superior. */
+.etLigature {
+  display: inline-block;
+  height: 0.75em;
+  width: auto;
+  overflow: visible;
+  vertical-align: baseline;
+}
+
+.language {
+  display: grid;
+  place-items: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .language {
+    span {
+      animation: revealFlag 300ms ease-out;
+    }
+    img {
+      transition: transform 200ms ease;
+    }
+    &:is(:hover, :focus-visible) img {
+      transform: translateY(-1px) scale(1.08);
+    }
+    &:active img {
+      transform: scale(0.94);
+    }
+  }
+}
+
+@keyframes revealFlag {
+  from {
+    opacity: 0.4;
+    transform: rotate(-12deg) scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: grid;
+  align-content: center;
+  min-height: min(52rem, 86svh);
+  padding-block: clamp(4rem, 7vw, 7rem) 5.5rem;
+}
+
+.heroCopy {
+  min-width: 0;
+  h1 {
+    margin-block: 1.75rem 2.25rem;
+    max-width: 16ch;
+    font-size: clamp(3rem, 7.6vw, 7.7rem);
+    letter-spacing: -0.065em;
+    line-height: 0.99;
+    overflow-wrap: break-word;
+
+    @media (max-width: 30rem) {
+      font-size: clamp(2rem, 9.8vw, 3rem);
+    }
+
+    > span:first-child {
+      display: block;
+    }
+
+    .terminalLine {
+      display: flex;
+      align-items: baseline;
+      color: var(--hero-gold-shade);
+    }
+  }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  > span {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 2px;
+    background: var(--gold);
+  }
+}
+
+.description {
+  max-width: 38rem;
+  color: var(--muted);
+  font-size: clamp(1.125rem, 1.55vw, 1.35rem);
+  line-height: 1.65;
+}
+
+.explore {
+  --button-fill: #000;
+  --button-ink: #fff;
+  --button-hover-fill: #fff;
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.25rem;
+  margin-top: 2rem;
+  padding-inline: 1.5rem;
+  border: 1px solid #000;
+  border-radius: 0;
+  background-color: var(--button-fill);
+  color: var(--button-ink);
+  font-size: 1rem;
+  vertical-align: middle;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--button-hover-fill);
+      color: #000;
+    }
+  }
+}
+
+:global([data-theme='dark']) .explore {
+  --button-fill: #fff;
+  --button-ink: #000;
+  --button-hover-fill: var(--accent-text);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+
+  span {
+    width: 5px;
+    height: 5px;
+    background: var(--accent-text);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
+
+.initiative {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: clamp(2rem, 8vw, 8rem);
+  padding-block: clamp(4rem, 8vw, 8rem);
+  border-top: 1px solid var(--gold);
+
+  h2 {
+    max-width: 36rem;
+    margin-top: 1.5rem;
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.13;
+    letter-spacing: -0.05em;
+  }
+}
+
+.initiativeCopy {
+  max-width: 34rem;
+  color: var(--editorial-ink);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+
+  p + p {
+    margin-top: 1.5rem;
+    font-size: 0.9375rem;
+  }
+}
+
+.challenge,
+.proposal,
+.applications {
+  padding-block: clamp(3.5rem, 7vw, 7rem);
+  border-top: 1px solid var(--gold);
+
+  h2 {
+    margin-block: 1.25rem;
+    line-height: 1.18;
+    letter-spacing: -0.04em;
+    overflow-wrap: break-word;
+  }
+}
+
+.challenge h2 {
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 4.3vw, 3.75rem);
+}
+
+.challengeBody {
+  max-width: 39rem;
+  margin-top: 2rem;
+  border-inline-start: 2px solid var(--brand);
+  padding-inline-start: 1.25rem;
+  color: var(--editorial-ink);
+  font-size: 1.125rem;
+}
+
+.proposal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: clamp(2rem, 7vw, 7rem);
+
+  h2 {
+    font-size: clamp(1.75rem, 3vw, 3rem);
+  }
+
+  > div h2 + p,
+  dd {
+    color: var(--editorial-ink);
+    font-size: 1.0625rem;
+  }
+
+  dl > div {
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--gold);
+  }
+
+  dt {
+    margin-bottom: 0.35rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.applications {
+  h2 {
+    max-width: 24ch;
+    font-size: clamp(1.75rem, 3.8vw, 3.5rem);
+  }
+
+  details {
+    border-top: 1px solid var(--gold);
+  }
+
+  summary {
+    padding-block: 1.25rem;
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    cursor: pointer;
+  }
+
+  summary::marker {
+    color: var(--accent-text);
+  }
+
+  details p,
+  .applicationsIntro {
+    max-width: 60ch;
+    color: var(--muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  details p {
+    padding-bottom: 1.5rem;
+  }
+}
+
+.applicationItems {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: 56rem) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  summary:focus-visible {
+    color: var(--accent-text);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    details:hover summary {
+      color: var(--accent-text);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    summary {
+      transition: color 200ms ease;
+    }
+  }
+}
+
+.applicationsIntro {
+  margin-bottom: 2rem;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--gold);
+  color: var(--muted);
+  font-size: 0.75rem;
+
+  > span {
+    font-size: 1rem;
+    letter-spacing: -0.06em;
+  }
+}
+
+@keyframes enterLine {
+  from {
+    transform: translateY(0.4em);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes extendLine {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .heroCopy {
+    h1 > span {
+      animation: enterLine 760ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+
+    h1 > span:last-child {
+      animation-delay: 140ms;
+    }
+
+    .eyebrow > span {
+      transform-origin: left;
+      animation: extendLine 550ms ease-out backwards;
+    }
+  }
+
+  :is(.initiative, .challenge, .proposal, .applications)
+    :is(h2, p, dl > div)[data-entered] {
+    transition: translate 680ms ease-out;
+  }
+
+  :is(.initiative, .challenge, .proposal, .applications) [data-entering] {
+    translate: 0 1rem;
+  }
+
+  :is(.initiative, .challenge, .proposal, .applications)
+    .eyebrow[data-entered] {
+    animation: enterLine 480ms ease-out backwards;
+  }
+
+  .description {
+    animation: enterLine 600ms ease-out 240ms backwards;
+  }
+
+  .explore {
+    transition:
+      background-color 240ms linear,
+      color 240ms steps(2, jump-none);
+  }
+
+  @supports (animation-timeline: view()) and
+    (animation-range: entry 0% entry 85%) {
+    .initiative h2,
+    .initiativeCopy,
+    .challenge h2,
+    .challengeBody,
+    .proposal h2,
+    .proposal h2 + p,
+    .proposal dl > div,
+    .applications h2,
+    .applicationsIntro {
+      animation: enterLine 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 85%;
+    }
+  }
+}
+
+.hero:has([data-playing='true']) {
+  --hero-play-state: running;
+}
+
+.cursor {
+  font-family: monospace;
+  font-size: 0.76em;
+  margin-inline-start: 0.06em;
+  animation: cursorBlink 1.8s ease-in-out infinite;
+  animation-play-state: var(--hero-play-state, paused);
+}
+
+@keyframes cursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.12;
+  }
+}
+
+.aboutPage {
+  width: min(100% - 2 * var(--page-gutter), var(--content-width));
+  margin-inline: auto;
+  padding-block: clamp(4rem, 8vw, 8rem);
+  min-height: 65svh;
+  h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.15;
+  }
+  h2 {
+    margin-block: 2rem 1rem;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+  }
+  p {
+    max-width: 60ch;
+    color: var(--muted);
+    font-size: 1.125rem;
+  }
+}
+.contactEmail {
+  align-self: center;
+  font-size: 1.25rem;
+}

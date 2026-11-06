@@ -1,0 +1,53 @@
+.menu {
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target);
+    padding-inline: 0.625rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+    margin: -0.2rem 0 0 0.45rem;
+  }
+  &[open] summary::after {
+    transform: rotate(225deg);
+    margin-top: 0.25rem;
+  }
+  > div {
+    position: absolute;
+    z-index: 10;
+    inset-inline-end: 0;
+    top: calc(100% + 0.375rem);
+    width: max-content;
+    min-width: 12rem;
+    max-width: 100%;
+    max-height: min(65svh, calc(100svh - 7rem));
+    overflow: auto;
+    padding: 0.25rem;
+    background: var(--surface);
+    border: 1px solid var(--gold);
+  }
+  a {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    padding-inline: 1rem;
+  }
+  a:is(:hover, :focus-visible) {
+    background: var(--control-bg);
+  }
+  a:focus-visible {
+    outline-offset: -3px;
+  }
+}
