@@ -139,16 +139,6 @@
     @media (max-width: 30rem) {
       font-size: clamp(2rem, 9.8vw, 3rem);
     }
-
-    > span:first-child {
-      display: block;
-    }
-
-    .terminalLine {
-      display: flex;
-      align-items: baseline;
-      color: var(--hero-gold-shade);
-    }
   }
 }
 
@@ -409,14 +399,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .heroCopy {
-    h1 > span {
-      animation: enterLine 760ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
-    }
-
-    h1 > span:last-child {
-      animation-delay: 140ms;
-    }
-
     .eyebrow > span {
       transform-origin: left;
       animation: extendLine 550ms ease-out backwards;
@@ -467,24 +449,6 @@
 
 .hero:has([data-playing='true']) {
   --hero-play-state: running;
-}
-
-.cursor {
-  font-family: monospace;
-  font-size: 0.76em;
-  margin-inline-start: 0.06em;
-  animation: cursorBlink 1.8s ease-in-out infinite;
-  animation-play-state: var(--hero-play-state, paused);
-}
-
-@keyframes cursorBlink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.12;
-  }
 }
 
 .aboutPage {

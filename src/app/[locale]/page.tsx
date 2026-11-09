@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { getTranslations } from 'next-intl/server';
-import { GradientText } from '@/components/react-bits/GradientText/GradientText';
+import { TextType } from '@/components/react-bits/TextType/TextType';
+import { HeroMotion } from '@/components/ui/Trajectory/HeroMotion';
 import { Trajectory } from '@/components/ui/Trajectory/Trajectory';
 import { SectionEntrance } from '@/components/ui/SectionEntrance';
 import { SiteFrame } from './SiteFrame';
@@ -23,36 +24,34 @@ export default async function Home({
   return (
     <SiteFrame locale={locale}>
       <main id="main" tabIndex={-1}>
-        <section id="home" className={styles.hero} aria-labelledby="hero-title">
-          <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>
-              <span aria-hidden="true" />
-              {t('eyebrow')}
-            </p>
-            <h1 id="hero-title">
-              <span>{t('title')}</span>{' '}
-              <span className={styles.terminalLine}>
-                <GradientText
-                  colors={['var(--hero-gold-peak)', 'var(--hero-gold-shade)']}
-                >
-                  {t('titleAccent')}
-                </GradientText>
-                <span aria-hidden="true" className={styles.cursor}>
-                  _
-                </span>
-              </span>
-            </h1>
-            <p className={styles.description}>{t('description')}</p>
-            <a className={styles.explore} href="#initiative">
-              {t('explore')}
-            </a>
-            <p className={styles.status}>
-              <span aria-hidden="true" />
-              {t('status')}
-            </p>
-          </div>
-          <Trajectory play={t('playMotion')} pause={t('pauseMotion')} />
-        </section>
+        <HeroMotion>
+          <section
+            id="home"
+            className={styles.hero}
+            aria-labelledby="hero-title"
+          >
+            <div className={styles.heroCopy}>
+              <p className={styles.eyebrow}>
+                <span aria-hidden="true" />
+                {t('eyebrow')}
+              </p>
+              <TextType
+                key={locale}
+                title={t('title')}
+                accent={t('titleAccent')}
+              />
+              <p className={styles.description}>{t('description')}</p>
+              <a className={styles.explore} href="#initiative">
+                {t('explore')}
+              </a>
+              <p className={styles.status}>
+                <span aria-hidden="true" />
+                {t('status')}
+              </p>
+            </div>
+            <Trajectory play={t('playMotion')} pause={t('pauseMotion')} />
+          </section>
+        </HeroMotion>
         <SectionEntrance>
           <section
             className={styles.initiative}

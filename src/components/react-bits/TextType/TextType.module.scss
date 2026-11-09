@@ -1,0 +1,57 @@
+.heading {
+  position: relative;
+}
+.line {
+  display: block;
+}
+.reserve,
+.remainder {
+  visibility: hidden;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.marker,
+.staticBar {
+  display: inline-block;
+  width: 0;
+  height: 0.76em;
+  vertical-align: baseline;
+}
+.staticBar::after,
+.cursor {
+  position: absolute;
+  width: 0.033em;
+  height: 0.76em;
+  margin-inline-start: 0.06em;
+  background: var(--hero-caret);
+}
+.staticBar::after {
+  content: '';
+}
+.cursor {
+  left: 0;
+  transition: transform 120ms ease-out;
+  animation: blink 1.4s ease-in-out infinite alternate;
+}
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+.glyph {
+  animation: fade 360ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
