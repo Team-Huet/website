@@ -42,7 +42,9 @@
 - Usar Onest no hero, nos títulos H1–H3, nos destaques editoriais, na leitura contínua e na interface. Reservar Michroma à composição do wordmark HUET. Servir ambas localmente com as licenças.
 - Tratar o logotipo HUET como marca independente das fontes de títulos e de interface. Preservar o desenho do wordmark textual atual até a aprovação de arte oficial.
 - Preservar a paleta Deep Intelligence e o azul institucional `#009EE0`.
-- Aplicar o azul-marinho `#08192B` como fundo de todas as páginas no tema escuro. Usar o dourado institucional `#D6B36A` no Gradient Text do React Bits da segunda linha do título e no cursor de terminal. Derivar tons mais profundos para garantir contraste no tema claro.
+- Aplicar o azul-marinho `#08192B` como fundo de todas as páginas no tema escuro. Usar o dourado institucional `#D6B36A` no Gradient Text do React Bits da segunda linha do título. Derivar tons mais profundos para garantir contraste no tema claro.
+- Aplicar o Text Type do React Bits somente ao H1 da página inicial. Digitar as duas partes do título localizado em sequência (150 ms por caractere), com entrada suave, erros simulados (`mistakes: 0.2`) e correção. Aguardar 1500 ms com o título completo e apagar de trás para frente a cada 50 ms. Preservar a Onest, as quebras responsivas e o gradiente da segunda linha.
+- Usar cursor vertical dourado (`--hero-caret: #eab308`) com deslocamento suave na mesma linha. Reservar o espaço do título completo e fornecer um único nome acessível estável. Com movimento reduzido, sem JavaScript ou ao pausar a animação da Hero, mostrar o título completo e estático.
 - Não tratar o tema claro sugerido, o logo vetorial, o favicon ou a tagline provisória como definitivamente aprovados.
 - Proibir aparência de template genérico de IA/Codex: cartões repetitivos, glows, gradientes decorativos, sombras excessivas, ícones sem função, layouts copiados e animações sem propósito.
 - Consultar o design system e as specs antes de mudar a interface. Cada seção deve ter composição adequada ao conteúdo.
@@ -52,8 +54,8 @@
 
 ## Animação de fundo
 
-- Usar a página inicial para explorar um fundo tecnológico que represente dados em movimento. Pontos podem percorrer trajetórias e conectar nós no espaço. Tratar essa composição como uma abstração visual da iniciativa.
-- O movimento deve ser perceptível desde a abertura, inclusive no celular e com o cursor parado. Concentrar as conexões nas áreas livres e reservar espaço visual para a leitura do título e dos parágrafos nos dois temas.
+- Usar a página inicial para explorar um fundo tecnológico que represente dados em movimento. Na Hero, uma malha de pontos desenha a mão em primeiro plano. Na palma, um núcleo poligonal conecta-se por trilhas finas aos anéis dourados nas pontas dos cinco dedos. Atrás da silhueta, linhas azuis finas conectam os nós e conduzem pulsos de dados. Tratar essa composição como uma abstração visual da iniciativa.
+- O movimento deve ser perceptível desde a abertura, inclusive no celular e com o cursor parado. Concentrar o movimento nas áreas livres e reservar espaço visual para a leitura do título e dos parágrafos nos dois temas.
 - Manter a camada gráfica fora da navegação por teclado e da árvore de acessibilidade, deixando cliques, toque e rolagem disponíveis para o conteúdo. Oferecer um controle acessível para pausar e retomar o movimento contínuo. Com `prefers-reduced-motion`, começar com a composição estática e permitir ativação manual.
 - Ajustar a quantidade de pontos à área da tela. Verificar legibilidade, fluidez da rolagem e funcionamento da pausa na prévia antes de estender o efeito a outras seções.
 

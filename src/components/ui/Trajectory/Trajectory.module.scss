@@ -1,25 +1,23 @@
 .figure {
+  --scene-play: paused;
+  &[data-playing='true'] {
+    --scene-play: running;
+  }
   .paths {
     position: absolute;
-    inset-block: 0;
-    right: 0;
+    inset: 0;
     z-index: -1;
-    width: max(100%, 48rem);
+    width: 100%;
     height: 100%;
     pointer-events: none;
     fill: none;
     mask-image: linear-gradient(
       105deg,
-      transparent,
-      rgb(0 0 0 / 10%) 28%,
-      black 74%
+      rgb(0 0 0 / 7%),
+      rgb(0 0 0 / 20%) 39%,
+      black 70%
     );
   }
-
-  circle {
-    fill: var(--accent-text);
-  }
-
   button {
     position: absolute;
     bottom: 1rem;
@@ -43,43 +41,124 @@
   }
 }
 
-.connection {
-  stroke: var(--accent-text);
-  stroke-opacity: 0.42;
-  vector-effect: non-scaling-stroke;
+.network {
+  fill: var(--accent-text);
+  opacity: 0.39;
 }
-
-.figure .hub {
+.connection,
+.hub {
   stroke: var(--accent-text);
-  stroke-opacity: 0.6;
+  stroke-width: 0.7;
+  opacity: 0.55;
   fill: none;
 }
-
-.point {
+.point,
+.signal {
+  fill: none;
   stroke: var(--accent-text);
-  stroke-width: 4;
+  stroke-width: 2.5;
   stroke-linecap: round;
-  stroke-dasharray: 0.24 99.76;
-  animation: travel 9s linear infinite paused;
+  stroke-dasharray: 1.8 98.2;
+  animation: travel 6s linear infinite;
+  animation-play-state: var(--scene-play);
 }
-
-.figure[data-playing='true'] .point {
-  animation-play-state: running;
+.dust {
+  fill: var(--accent-text);
+  opacity: 0.42;
+  animation: drift 9s ease-in-out infinite alternate;
+  animation-play-state: var(--scene-play);
 }
-
-@media (max-width: 48rem) {
-  .figure .paths {
-    mask-image: linear-gradient(
-      108deg,
-      transparent 38%,
-      rgb(0 0 0 / 12%) 71%,
-      rgb(0 0 0 / 80%)
-    );
-  }
+.hand {
+  transform-origin: 0 45px;
+  animation: hovering 9s ease-in-out infinite alternate;
+  animation-play-state: var(--scene-play);
 }
-
+.wave {
+  animation: scan 5s linear infinite;
+  animation-play-state: var(--scene-play);
+}
+.synapses {
+  opacity: 0.82;
+}
+.fiber,
+.ring,
+.ripple {
+  stroke: var(--accent-text);
+  stroke-width: 0.4;
+  fill: none;
+}
+.ring,
+.ripple {
+  stroke: var(--hero-gold-peak);
+}
+.signal {
+  stroke: var(--hero-gold-peak);
+  stroke-width: 0.95;
+  stroke-dasharray: 3 97;
+  animation-duration: 3.3s;
+}
+.sensor {
+  fill: var(--hero-gold-peak);
+  animation: pulse 2.8s ease-in-out infinite alternate;
+  animation-play-state: var(--scene-play);
+}
+.ripple {
+  animation: broadcast 3.3s ease-out infinite;
+  animation-play-state: var(--scene-play);
+}
 @keyframes travel {
   to {
     stroke-dashoffset: -100;
+  }
+}
+@keyframes scan {
+  from {
+    transform: translateY(110px);
+  }
+  to {
+    transform: translateY(-240px);
+  }
+}
+@keyframes pulse {
+  to {
+    opacity: 0.4;
+  }
+}
+@keyframes broadcast {
+  from {
+    transform: scale(0.45);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes drift {
+  to {
+    transform: translate(14px, -15px);
+  }
+}
+@keyframes hovering {
+  from {
+    transform: rotate(-2.5deg) translateY(2px);
+  }
+  to {
+    transform: rotate(2.5deg) translateY(-3px);
+  }
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .figure .paths {
+    width: max(100%, 125svh);
+    left: auto;
+    right: -28%;
+    opacity: 0.44;
+    mask-image: linear-gradient(
+      95deg,
+      transparent 25%,
+      rgb(0 0 0 / 14%) 56%,
+      rgb(0 0 0 / 72%) 84%
+    );
   }
 }

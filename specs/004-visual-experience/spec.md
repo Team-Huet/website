@@ -1,3 +1,3 @@
 # 004 — Experiência visual
 
-O hero coordena as trajetórias, o Gradient Text e o cursor pelo controle de animação. Os textos editoriais usam entrada por viewport e rolagem nos navegadores compatíveis. Validar a preferência por movimento reduzido, a pausa manual e a legibilidade com os efeitos estáticos. A avaliação de fluidez em aparelhos reais segue pendente.
+O hero coordena a mão de partículas, as trilhas do núcleo geométrico até os dedos, a rede ao fundo, a digitação Text Type, o Gradient Text e o cursor vertical pelo controle de animação. Os textos editoriais usam entrada por viewport e rolagem nos navegadores compatíveis. Validar a preferência por movimento reduzido, a pausa manual e a legibilidade com os efeitos estáticos. O H1 mantém o nome acessível e o espaço do título completo durante a digitação e o apagamento. Com o movimento pausado, o título inteiro fica disponível para leitura. A avaliação de fluidez em aparelhos reais segue pendente.

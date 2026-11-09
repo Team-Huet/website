@@ -103,48 +103,65 @@ test('conteúdo reflui em 320 pixels CSS', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
-test('anima a entrada do título e respeita a preferência por movimento reduzido', async ({
+test('digita e apaga o título sem deslocar o conteúdo e oferece leitura estática', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/pt-BR');
+  await page.evaluate(() => document.fonts.ready);
+  const full = 'Infraestrutura de dados para a LIBRAS';
+  const heading = page.getByRole('heading', {
+    level: 1,
+    name: full,
+    exact: true,
+  });
+  const animated = heading.locator('[data-typing]');
+  const visibleText = async () =>
+    (await animated.innerText()).replace(/\s+/g, ' ').trim();
+  await expect.poll(visibleText).toMatch(/^.{1,20}$/);
+  const initial = await heading.boundingBox();
+  await expect
+    .poll(visibleText, { timeout: 18000, intervals: [150] })
+    .toBe(full);
+  await expect.poll(visibleText).not.toBe(full);
+  expect((await heading.boundingBox())?.height).toBe(initial?.height);
 
-  const firstLine = page
-    .getByRole('heading', { level: 1 })
-    .locator('span')
-    .first();
-  await expect(firstLine).not.toHaveCSS('animation-name', 'none');
-  await expect(firstLine).toHaveCSS('animation-iteration-count', '1');
+  await page.getByRole('button', { name: 'Pausar animação' }).click();
+  await expect(animated).toHaveCount(0);
+  await expect(heading).toHaveText(full.replace(' para', 'para'));
+  await page.getByRole('button', { name: 'Animar cena' }).click();
+  await expect(animated).toBeVisible();
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(firstLine).toHaveCSS('animation-name', 'none');
-  await expect(firstLine).toHaveCSS('opacity', '1');
+  await page.reload();
+  await expect(heading).toBeVisible();
+  await expect(animated).toHaveCount(0);
   await expect(page.locator('#initiative-title')).toHaveCSS(
     'animation-name',
     'none',
   );
 });
 
-test('trajetórias se movem por padrão e permitem pausar e retomar', async ({
+test('partículas da Hero se movem por padrão e permitem pausar e retomar', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/pt-BR');
-  const point = page.locator('main svg path[pathLength]').first();
+  const point = page.locator('[data-particle-hand]').first();
   await expect(point).toHaveCSS('animation-play-state', 'running');
   const offset = () =>
-    point.evaluate((node) => getComputedStyle(node).strokeDashoffset);
+    point.evaluate((node) => getComputedStyle(node).transform);
   const start = await offset();
   await expect.poll(offset).not.toBe(start);
   await page.getByRole('button', { name: 'Pausar animação' }).click();
   await expect(point).toHaveCSS('animation-play-state', 'paused');
-  await page.getByRole('button', { name: 'Animar trajetórias' }).click();
+  await page.getByRole('button', { name: 'Animar cena' }).click();
   await expect(point).toHaveCSS('animation-play-state', 'running');
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
   await expect(point).toHaveCSS('animation-play-state', 'paused');
-  await page.getByRole('button', { name: 'Animar trajetórias' }).click();
+  await page.getByRole('button', { name: 'Animar cena' }).click();
   await expect(point).toHaveCSS('animation-play-state', 'running');
 });
 
