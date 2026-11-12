@@ -12,6 +12,17 @@ A revisão acrescentou entrada escalonada ao título, resposta da seta ao foco e
 
 A pedido do responsável, a abertura recebeu trajetórias abstratas com pontos em movimento contínuo. A animação inicia automaticamente na preferência padrão. Com movimento reduzido, o visitante pode iniciá-la pelo botão. A nova rodada passou no build, nos 6 testes unitários e nos 30 testes de navegador, incluindo deslocamento dos pontos, pausa e retomada.
 
+## Correção do build com exportação estática — 2026-11-11
+
+O build foi reproduzido com a falha `Missing: "rest"` na rota `/[locale]/[...rest]`. A correção substitui essa rota genérica por `/[locale]/404`, reutilizando o componente de erro localizado. Justificativa e limites em [ADR 0002](../../docs/architecture/decisions/0002-static-export-not-found.md).
+
+- `NEXT_TELEMETRY_DISABLED=1 npm run check`: passou na solução final — lint, tipos, formatação, 6 testes em 2 arquivos e build com Turbopack. Arquivos estáticos gerados em `out/`.
+- Inspeção automatizada dos HTMLs exportados com Node/JSDOM: páginas inicial, Sobre e 404 nos dois idiomas têm `html lang` correto e H1. Nas páginas 404, título e link de retorno correspondem ao catálogo do idioma e o link respeita `/website`. A página global `out/404.html` também foi gerada com H1 `404`.
+- A primeira verificação de tipos após a remoção da rota encontrou referências antigas em `.next/dev/types`. Apenas esse cache gerado foi removido; a execução completa seguinte passou sem alterar as regras de TypeScript.
+- O build precisou de comunicação local entre processos fora do sandbox restrito. A trava temporária deixada pela execução anterior interrompida foi removida após verificar a ausência de processo Node ativo.
+- O build avisa que Proxy/middleware não executa na exportação estática. O redirecionamento da raiz e a entrega de 404s arbitrárias dependem da preparação da hospedagem.
+- E2E e revisão visual não executados nesta correção de parâmetros. A configuração E2E atual usa `next start`, incompatível com `output: 'export'`; sua adaptação para servir `out/` permanece pendente. Nenhuma publicação foi realizada.
+
 ## Revisão posterior do fundo da abertura
 
 Em 2026-11-06 as trajetórias passaram a ocupar o fundo da abertura. A nova rodada passou no build, nos 6 testes unitários e nos 30 testes de navegador. A inspeção das capturas atualizadas em `artifacts/` incluiu desktop claro e escuro e celular emulado. A avaliação estética do responsável e o teste em WebKit seguem pendentes.
