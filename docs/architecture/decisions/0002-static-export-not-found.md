@@ -14,7 +14,7 @@ O tratamento de URLs arbitrárias em hospedagem estática depende do servidor qu
 
 As páginas explícitas `/pt-BR/404` e `/en/404` são documentos estáticos localizados, não regras de resposta HTTP. O host deve entregar a página adequada com status 404 ao receber um endereço inexistente. Sem essa configuração, a 404 global padrão continua sendo o fallback; a antiga captura localizada de URLs arbitrárias via `[...rest]` deixa de existir. O arquivo `[locale]/not-found.tsx` é preservado para erros emitidos dentro de rotas localizadas.
 
-O Proxy de idiomas não executa no artefato estático. Redirecionamento da raiz, caminhos sob `/website` e execução E2E sobre os arquivos exportados precisam ser revisados na etapa de preparação da hospedagem. O comando `next start` utilizado pela configuração E2E atual não serve uma exportação estática.
+O Proxy de idiomas não executa no artefato estático. O comando `next start` usado inicialmente pelo E2E não serve uma exportação estática. A prévia local e os testes foram adaptados posteriormente conforme [ADR 0003](0003-static-preview-e2e.md); configurar redirecionamento da raiz e páginas de erro na hospedagem real continua pendente.
 
 ## Referências
 

@@ -83,7 +83,7 @@ export function Trajectory({ play, pause }: { play: string; pause: string }) {
             height="229"
           >
             <image
-              href="/art/hand-points.webp"
+              href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/art/hand-points.webp`}
               x="-135"
               y="-152"
               width="216"

@@ -15,6 +15,7 @@ export async function SiteFrame({
   children: ReactNode;
 }) {
   const nextLocale = locale === 'pt-BR' ? 'en' : 'pt-BR';
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
   const t = await getTranslations('Home');
   const nav = await getTranslations('Navigation');
 
@@ -48,7 +49,7 @@ export async function SiteFrame({
         >
           {/* Each locale owns its HTML document and server-rendered theme script. */}
           <a
-            href={`/${nextLocale}${about ? '/about' : ''}`}
+            href={`${basePath}/${nextLocale}/${about ? 'about/' : ''}`}
             lang={nextLocale}
             hrefLang={nextLocale}
             aria-label={languageLabel}
@@ -57,7 +58,7 @@ export async function SiteFrame({
           >
             <span key={locale}>
               <Image
-                src={locale === 'en' ? '/flags/us.svg' : '/flags/br.svg'}
+                src={`${basePath}/flags/${locale === 'en' ? 'us' : 'br'}.svg`}
                 width={32}
                 height={32}
                 alt=""
@@ -79,8 +80,8 @@ export async function SiteFrame({
                 aria-current={about && id === 'about' ? 'page' : undefined}
                 href={
                   id === 'about'
-                    ? `/${locale}/about`
-                    : `${about ? '/' + locale : ''}#${id}`
+                    ? `${basePath}/${locale}/about/`
+                    : `${about ? `${basePath}/${locale}/` : ''}#${id}`
                 }
               >
                 {t(label)}

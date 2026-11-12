@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { productionBasePath } from '../../src/config/paths';
 
 for (const locale of ['pt-BR', 'en'] as const) {
   for (const theme of ['light', 'dark'] as const) {
@@ -12,7 +13,7 @@ for (const locale of ['pt-BR', 'en'] as const) {
         if (message.type() === 'error') errors.push(message.text());
       });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
-      await page.goto(`/${locale}`);
+      await page.goto(`${locale}/`);
       await expect(page.locator('html')).toHaveAttribute('lang', locale);
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await expect(page.getByRole('heading', { level: 1 })).toContainText(
@@ -43,44 +44,62 @@ for (const locale of ['pt-BR', 'en'] as const) {
 test('troca de idioma mantém o tema escolhido e a preferência persiste', async ({
   page,
 }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/pt-BR');
+  await page.goto('pt-BR/');
   await page
     .getByRole('button', { name: 'Alternar entre tema claro e escuro' })
     .click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   const flag = page.locator('header nav img');
   await expect(flag).toHaveCount(1);
-  await expect(flag).toHaveAttribute('src', '/flags/br.svg');
+  await expect(flag).toHaveAttribute(
+    'src',
+    `${productionBasePath}/flags/br.svg`,
+  );
   await page.getByRole('link', { name: 'Read in English' }).click();
-  await expect(flag).toHaveAttribute('src', '/flags/us.svg');
-  await expect(page).toHaveURL(/\/en$/);
+  await expect(flag).toHaveAttribute(
+    'src',
+    `${productionBasePath}/flags/us.svg`,
+  );
+  await expect(page).toHaveURL(/\/en\/$/);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('link', { name: 'Ler em português brasileiro' }).click();
-  await expect(flag).toHaveAttribute('src', '/flags/br.svg');
-  await expect(page).toHaveURL(/\/pt-BR$/);
+  await expect(flag).toHaveAttribute(
+    'src',
+    `${productionBasePath}/flags/br.svg`,
+  );
+  await expect(page).toHaveURL(/\/pt-BR\/$/);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(errors).toEqual([]);
 });
 
 test('raiz usa português e endereços inexistentes retornam 404', async ({
   page,
 }) => {
-  await page.goto('/');
-  await expect(page).toHaveURL(/\/pt-BR$/);
-  const response = await page.goto('/en/missing');
+  await page.goto('./');
+  await expect(page).toHaveURL(/\/pt-BR\/$/);
+  const response = await page.goto('en/missing/');
   expect(response?.status()).toBe(404);
   await expect(
     page.getByRole('heading', { name: 'Page not found' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Back to home' }).click();
-  await expect(page).toHaveURL(/\/en$/);
+  await expect(page).toHaveURL(/\/en\/$/);
 });
 
 test('atalho de teclado alcança o conteúdo e a âncora funciona', async ({
   page,
 }) => {
-  await page.goto('/pt-BR');
+  await page.goto('pt-BR/');
   await page.keyboard.press('Tab');
   await expect(
     page.getByRole('link', { name: 'Ir para o conteúdo' }),
@@ -94,7 +113,7 @@ test('atalho de teclado alcança o conteúdo e a âncora funciona', async ({
 
 test('conteúdo reflui em 320 pixels CSS', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.goto('/en');
+  await page.goto('en/');
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -107,7 +126,7 @@ test('digita e apaga o título sem deslocar o conteúdo e oferece leitura estát
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/pt-BR');
+  await page.goto('pt-BR/');
   await page.evaluate(() => document.fonts.ready);
   const full = 'Infraestrutura de dados para a LIBRAS';
   const heading = page.getByRole('heading', {
@@ -146,7 +165,7 @@ test('partículas da Hero se movem por padrão e permitem pausar e retomar', asy
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/pt-BR');
+  await page.goto('pt-BR/');
   const point = page.locator('[data-particle-hand]').first();
   await expect(point).toHaveCSS('animation-play-state', 'running');
   const offset = () =>
@@ -171,7 +190,7 @@ test('menu do cabeçalho dá acesso às seções e à página Sobre, inclusive e
   await page.setViewportSize({ width: 320, height: 800 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const locale of ['pt-BR', 'en']) {
-    await page.goto('/' + locale);
+    await page.goto(locale + '/');
     await expect(page.locator('footer nav')).toHaveCount(0);
     const menu = page.locator('header summary');
     await menu.focus();
@@ -194,14 +213,14 @@ test('menu do cabeçalho dá acesso às seções e à página Sobre, inclusive e
     await expect(page.locator('#contact')).toContainText('joao@huet.io');
     await expect(page.locator('form, #collaboration, #about')).toHaveCount(0);
     await menu.click();
-    await page.locator('header a[href$="/about"]').click();
-    await expect(page).toHaveURL(new RegExp('/' + locale + '/about$'));
+    await page.locator('header a[href$="/about/"]').click();
+    await expect(page).toHaveURL(new RegExp('/' + locale + '/about/$'));
     await expect(page.locator('main h1')).toHaveText(
       locale === 'en' ? 'About HUET' : 'Sobre a HUET',
     );
     await page.locator('header a[hreflang]').click();
     const other = locale === 'en' ? 'pt-BR' : 'en';
-    await expect(page).toHaveURL(new RegExp('/' + other + '/about$'));
+    await expect(page).toHaveURL(new RegExp('/' + other + '/about/$'));
     await menu.click();
     await page.locator('header a[href$="#contact"]').click();
     await expect(page.locator('#contact')).toBeInViewport();

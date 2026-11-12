@@ -31,7 +31,18 @@ npx playwright install chromium firefox webkit
 npm run test:e2e
 ```
 
-`check` executa lint, typecheck, formatação, unitários e build. O E2E usa o build previamente gerado e inicia seu próprio servidor na porta 3100. Essa porta deve estar livre.
+`check` executa lint, typecheck, formatação, unitários e build. O E2E usa os arquivos exportados em `out/` e inicia seu próprio servidor estático na porta 3100, sob `/website/`. Essa porta deve estar livre. Não utiliza `next start`, incompatível com `output: 'export'`.
+
+Para conferir o mesmo artefato manualmente:
+
+```bash
+npm run build
+npm start
+```
+
+Abrir `http://127.0.0.1:3000/website/pt-BR/`. Para outra porta, usar `npm start -- --port 3100`. O servidor de prévia escuta somente em `127.0.0.1`, serve `out/` e aplica o prefixo centralizado em `src/config/paths.ts`. Em desenvolvimento (`npm run dev`), os endereços continuam sem `/website`.
+
+A prévia redireciona `/website/` para português e entrega a página 404 do idioma com status HTTP 404 para caminhos inexistentes. Essas são regras locais de hospedagem, não middleware exportado pelo Next.js. A hospedagem real precisa configurar o comportamento correspondente; este script não a configura nem publica o site.
 
 Os testes cobrem a tela mínima nos dois idiomas e temas, navegação por teclado, persistência de tema, rotas, overflow, reflow e critérios de acessibilidade automatizáveis. Chromium, Firefox e WebKit são a matriz automatizada; o perfil mobile em Chromium é emulação, não aparelho real.
 

@@ -12,6 +12,18 @@ A revisão acrescentou entrada escalonada ao título, resposta da seta ao foco e
 
 A pedido do responsável, a abertura recebeu trajetórias abstratas com pontos em movimento contínuo. A animação inicia automaticamente na preferência padrão. Com movimento reduzido, o visitante pode iniciá-la pelo botão. A nova rodada passou no build, nos 6 testes unitários e nos 30 testes de navegador, incluindo deslocamento dos pontos, pausa e retomada.
 
+## Correção do E2E da exportação estática — 2026-11-11
+
+O responsável apresentou a falha do GitHub Actions: `next start` não funciona com `output: 'export'`. O script `start` agora serve `out/` com Node.js e o Playwright usa `/website/` como URL base. Links nativos, bandeiras e imagem da Hero respeitam o prefixo do build. Decisão em [ADR 0003](../../docs/architecture/decisions/0003-static-preview-e2e.md).
+
+- `NEXT_TELEMETRY_DISABLED=1 npm run check`: passou — lint, tipos, formatação, 6 testes unitários e build.
+- `npm run test:e2e -- --project=chromium --project=firefox --project=mobile-chromium`: **39 testes passaram**, incluindo os cenários existentes e verificações HTTP da prévia. Nenhum teste ou regra foi desabilitado. Axe-core não encontrou violações nos critérios configurados, em ambos os temas e idiomas nos três projetos.
+- Desenvolvimento: `npm run dev -- --port 3101` e verificação adicional via Chromium confirmaram pt-BR → en → pt-BR, tema escuro persistente após as duas recargas, chave `huet-theme` preservada e console do navegador sem erros. O servidor foi encerrado após a verificação.
+- Capturas inspecionadas: pt-BR/claro em desktop Chromium e en/escuro em celular emulado. Bandeiras e imagem da Hero carregam; não foram observados recortes de conteúdo. A aprovação visual humana permanece separada.
+- O Next.js ainda sinaliza incompatibilidade de Proxy/middleware com exportação estática no terminal. A prévia aplica regras locais de redirecionamento e 404, sem executar Proxy; isso não comprova configuração no host real.
+- WebKit local permanece adiado pela decisão anterior do responsável. O workflow mantém Chromium, Firefox e WebKit com instalação de dependências no runner; a nova execução no GitHub ainda não foi verificada. Safari real e dispositivos físicos não foram testados.
+- Servidores, build e navegadores exigiram comunicação local fora do sandbox. Nenhuma dependência adicionada, nenhuma publicação e nenhum envio externo realizado nesta correção.
+
 ## Correção do build com exportação estática — 2026-11-11
 
 O build foi reproduzido com a falha `Missing: "rest"` na rota `/[locale]/[...rest]`. A correção substitui essa rota genérica por `/[locale]/404`, reutilizando o componente de erro localizado. Justificativa e limites em [ADR 0002](../../docs/architecture/decisions/0002-static-export-not-found.md).

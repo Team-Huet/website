@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { productionBasePath } from './src/config/paths';
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -8,7 +9,7 @@ export default defineConfig({
   workers: 2,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:3100',
+    baseURL: `http://127.0.0.1:3100${productionBasePath}/`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
@@ -20,7 +21,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run start -- --port 3100',
-    url: 'http://127.0.0.1:3100/pt-BR',
+    url: `http://127.0.0.1:3100${productionBasePath}/pt-BR/`,
     reuseExistingServer: false,
     timeout: 30_000,
     env: { NEXT_TELEMETRY_DISABLED: '1' },
