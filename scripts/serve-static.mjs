@@ -59,12 +59,8 @@ createServer(async (req, res) => {
     res.writeHead(308, { Location: location });
     res.end();
   };
-  if (
-    pathname === productionBasePath ||
-    pathname === `${productionBasePath}/`
-  ) {
-    return redirect(`${productionBasePath}/pt-BR/${search}`);
-  }
+  if (pathname === productionBasePath)
+    return redirect(`${productionBasePath}/${search}`);
   if (!pathname.startsWith(`${productionBasePath}/`))
     return send(404, fallback);
   const relative = pathname.slice(productionBasePath.length + 1);

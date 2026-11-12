@@ -27,12 +27,15 @@ test('prévia entrega arquivos reais, HEAD e 404 sem fallback de SPA', async ({
   expect(post.status()).toBe(405);
 });
 
-test('prévia aplica redirecionamento e páginas de erro localizadas', async ({
+test('artefato tem entrada HTML e prévia entrega páginas de erro localizadas', async ({
   request,
 }) => {
   const root = await request.get('./', { maxRedirects: 0 });
-  expect(root.status()).toBe(308);
-  expect(root.headers().location).toBe(`${productionBasePath}/pt-BR/`);
+  expect(root.status()).toBe(200);
+  expect(await root.text()).toContain(
+    `content="0; url=${productionBasePath}/pt-BR/"`,
+  );
+  expect(await root.text()).toContain(`href="${productionBasePath}/pt-BR/"`);
   for (const locale of ['pt-BR', 'en']) {
     const missing = await request.get(`${locale}/missing/nested/`);
     expect(missing.status()).toBe(404);
@@ -40,5 +43,26 @@ test('prévia aplica redirecionamento e páginas de erro localizadas', async ({
     const explicit = await request.get(`${locale}/404/`);
     expect(explicit.status()).toBe(200);
     expect(await explicit.text()).toBe(await missing.text());
+  }
+});
+
+test('entrada do site abre português também sem JavaScript', async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+  });
+  try {
+    const page = await context.newPage();
+    await page.goto('./');
+    await expect(page).toHaveURL(new RegExp(`${productionBasePath}/pt-BR/$`));
+    await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      'Infraestrutura de dados',
+    );
+  } finally {
+    await context.close();
   }
 });

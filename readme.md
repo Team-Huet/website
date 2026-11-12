@@ -42,7 +42,7 @@ npm start
 
 Abrir `http://127.0.0.1:3000/website/pt-BR/`. Para outra porta, usar `npm start -- --port 3100`. O servidor de prévia escuta somente em `127.0.0.1`, serve `out/` e aplica o prefixo centralizado em `src/config/paths.ts`. Em desenvolvimento (`npm run dev`), os endereços continuam sem `/website`.
 
-A prévia redireciona `/website/` para português e entrega a página 404 do idioma com status HTTP 404 para caminhos inexistentes. Essas são regras locais de hospedagem, não middleware exportado pelo Next.js. A hospedagem real precisa configurar o comportamento correspondente; este script não a configura nem publica o site.
+O `postbuild` gera `out/index.html` com redirecionamento HTML de `/website/` para português, inclusive sem JavaScript. A prévia serve esse mesmo arquivo. Para caminhos inexistentes, a prévia seleciona a página 404 do idioma; essa seleção é uma regra local e não é exportada como middleware. GitHub Pages utiliza a página global `out/404.html`.
 
 Os testes cobrem a tela mínima nos dois idiomas e temas, navegação por teclado, persistência de tema, rotas, overflow, reflow e critérios de acessibilidade automatizáveis. Chromium, Firefox e WebKit são a matriz automatizada; o perfil mobile em Chromium é emulação, não aparelho real.
 
@@ -76,8 +76,12 @@ A seção exibe o endereço de demonstração `joao@huet.io` como texto. O ender
 
 ## GitHub e publicação
 
-Os arquivos `.github/workflows/ci.yml` e `e2e.yml` foram preparados para quando **este diretório for a raiz do repositório institucional**. Não presumem o diretório pai do espelho ChatGPT como raiz de um repositório GitHub.
+O remoto é o repositório público [Team-Huet/website](https://github.com/Team-Huet/website). A captura fornecida pelo responsável em 2026-11-11 mostra GitHub Actions como fonte de Pages. O workflow de publicação preparado localmente em `.github/workflows/deploy.yml` executa verificações, gera `out/`, roda E2E e publica o artefato com as ações oficiais do GitHub. CI e E2E independentes permanecem ativos.
 
-Não há remoto GitHub, branch protection, secrets, hosting ou deploy configurados. Os workflows não publicam o site e não enviam mensagens pelo Web3Forms. A tela inclui `noindex` enquanto conteúdo e publicação não forem aprovados.
+Após enviar o workflow para `main`, cada push nessa branch aciona uma publicação, condicionada ao sucesso das verificações. Também é possível executar **Actions → Publicar no GitHub Pages → Run workflow**, selecionando `main`. Em **Settings → Pages**, manter **Source: GitHub Actions**; não é necessário criar outro workflow pelo botão Configure.
 
-Antes da publicação, ainda é necessário aprovar conteúdo e layout com UX, configurar o contato e revisar a privacidade, definir domínio/hosting e validar acessibilidade e dispositivos reais.
+O endereço esperado para este repositório é `https://team-huet.github.io/website/`. A confirmação deve usar a URL retornada pelo job `deploy` e uma abertura do site após o sucesso. Reexecutar o workflow antigo sem enviar as alterações não aplica a correção. Se o ambiente `github-pages` exigir aprovação, o GitHub exibirá uma etapa de revisão do deployment.
+
+O workflow não requer token pessoal nem secret adicional; usa `GITHUB_TOKEN` e OIDC com permissões limitadas. Não presumir que branch protection ou proteções de ambiente estejam configuradas. Publicação não implica aprovação editorial/visual, conformidade WCAG ou validação de dispositivos reais. A tela continua com `noindex` e contato provisório, sem formulário ou envios externos.
+
+Preparação e evidências: [spec 008](specs/008-github-pages/spec.md). O estado de uma execução remota só deve ser considerado confirmado após sua verificação.

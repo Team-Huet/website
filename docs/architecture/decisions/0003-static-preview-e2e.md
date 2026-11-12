@@ -14,7 +14,7 @@ A URL base do Playwright termina em `/website/`; os testes navegam por caminhos 
 
 - Escutar somente em `127.0.0.1`, servir apenas arquivos dentro de `out/`, restringir métodos a GET/HEAD e não listar diretórios.
 - Entregar recursos com seu tipo de conteúdo; arquivos ausentes retornam 404, sem fallback de SPA que possa esconder links quebrados.
-- Redirecionar a raiz do site para `/website/pt-BR/` e diretórios para URLs com barra final.
+- Redirecionar diretórios para URLs com barra final. Na implementação inicial, a raiz era redirecionada no servidor; a [ADR 0004](0004-github-pages.md) substitui isso por `out/index.html` com redirecionamento HTML, compartilhado pela prévia e pelo Pages.
 - Entregar os documentos localizados de erro com status 404 para URLs inexistentes sob um idioma conhecido; usar `404.html` nos demais casos.
 - Acesso direto à página explícita `/website/en/404/` ou `/website/pt-BR/404/` continua retornando 200, pois é um documento existente. O status 404 é aplicado apenas quando o caminho solicitado não existe.
 
